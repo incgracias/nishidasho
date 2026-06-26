@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>World Name Pronunciation</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Noto Sans JP",
+    sans-serif;
+
+    background:#f4f7fb;
+    color:#222;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    padding:30px;
+}
+
+.container{
+
+    width:100%;
+    max-width:900px;
+
+    background:white;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.12);
+
+    padding:30px;
+
+}
+
+h1{
+
+    text-align:center;
+
+    color:#1565c0;
+
+    font-size:34px;
+
+    margin-bottom:30px;
+
+}
+
+.nameJP{
+
+    text-align:center;
+
+    font-size:42px;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+}
+
+.nameEN{
+
+    text-align:center;
+
+    font-size:28px;
+
+    color:#666;
+
+    letter-spacing:2px;
+
+    margin-bottom:25px;
+
+}
+
+#speakButton{
+
+    display:block;
+
+    margin:auto;
+
+    border:none;
+
+    background:#1976d2;
+
+    color:white;
+
+    font-size:22px;
+
+    padding:14px 30px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+#speakButton:hover{
+
+    background:#0d47a1;
+
+}
+
+.buttons{
+
+    margin-top:35px;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(170px,1fr));
+
+    gap:12px;
+
+}
+
+.langButton{
+
+    border:none;
+
+    background:#2196f3;
+
+    color:white;
+
+    font-size:20px;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.langButton:hover{
+
+    transform:translateY(-2px);
+
+    background:#1565c0;
+
+}
+
+#result{
+
+    margin-top:35px;
+
+    background:#eef5ff;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    min-height:120px;
+
+    text-align:center;
+
+}
+
+#displayName{
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    margin-bottom:12px;
+
+}
+
+#voiceArea{
+
+    margin-top:30px;
+
+    text-align:center;
+
+}
+
+#voiceTitle{
+
+    font-size:18px;
+
+    color:#777;
+
+}
+
+#voiceName{
+
+    margin-top:8px;
+
+    font-size:22px;
+
+    color:#1565c0;
+
+    font-weight:bold;
+
+}
+
+footer{
+
+    margin-top:40px;
+
+    text-align:center;
+
+    color:#999;
+
+    font-size:14px;
+
+}
+
+@media(max-width:700px){
+
+    h1{
+
+        font-size:28px;
+
+    }
+
+    .nameJP{
+
+        font-size:34px;
+
+    }
+
+    .nameEN{
+
+        font-size:22px;
+
+    }
+
+    .langButton{
+
+        font-size:18px;
+
+        padding:13px;
+
+    }
+
+    #displayName{
+
+        font-size:28px;
+
+    }
+
+}
+
+@media (prefers-color-scheme: dark){
+
+body{
+
+background:#1b1b1b;
+color:white;
+
+}
+
+.container{
+
+background:#2b2b2b;
+
+}
+
+#result{
+
+background:#3a3a3a;
+
+}
+
+.nameEN{
+
+color:#ddd;
+
+}
+
+#voiceTitle{
+
+color:#ccc;
+
+}
+
+footer{
+
+color:#bbb;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌍 World Name Pronunciation</h1>
+
+<div class="nameJP">
+西田 翔
+</div>
+
+<div id="selectedLanguage">
+</div>
+
+<button id="speakButton">
+🔊 Speak
+</button>
+
+<div class="buttons" id="buttons">
+
+<!-- Part2で20言語ボタンを自動生成 -->
+
+</div>
+
+<div id="result">
+
+<div id="displayName">
+
+西田 翔
+
+</div>
+
+<div id="displaySub">
+
+（にしだ しょう）
+
+</div>
+
+</div>
+
+<div id="voiceArea">
+
+<div id="voiceTitle">
+
+Voice
+
+</div>
+
+<div id="voiceName">
+
+Not Selected
+
+</div>
+
+</div>
+
+<footer>
+
+World Name Pronunciation Ver.1.0
+
+</footer>
+
+</div>
+
+<script>
+
+// ===============================
+// Language Data
+// ===============================
+
+const languages = [
+
+{
+flag:"🇯🇵",
+button:"日本語",
+display:"西田 翔",
+sub:"（にしだ しょう）",
+speak:"西田 翔",
+lang:"ja-JP"
+},
+
+{
+flag:"🇺🇸",
+button:"English",
+display:"SHO NISHIDA",
+sub:"",
+speak:"Sho Nishida",
+lang:"en-US"
+},
+
+{
+flag:"🇨🇳",
+button:"中文",
+display:"西田翔",
+sub:"Xītián Xiáng",
+speak:"西田翔",
+lang:"zh-CN"
+},
+
+{
+flag:"🇰🇷",
+button:"한국어",
+display:"니시다 쇼",
+sub:"",
+speak:"니시다 쇼",
+lang:"ko-KR"
+},
+
+{
+flag:"🇷🇺",
+button:"Русский",
+display:"Сё Нисида",
+sub:"",
+speak:"Сё Нисида",
+lang:"ru-RU"
+},
+
+{
+flag:"🇫🇷",
+button:"Français",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"fr-FR"
+},
+
+{
+flag:"🇩🇪",
+button:"Deutsch",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"de-DE"
+},
+
+{
+flag:"🇪🇸",
+button:"Español",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"es-ES"
+},
+
+{
+flag:"🇮🇹",
+button:"Italiano",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"it-IT"
+},
+
+{
+flag:"🇵🇹",
+button:"Português",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"pt-PT"
+},
+
+{
+flag:"🇳🇱",
+button:"Nederlands",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"nl-NL"
+},
+
+{
+flag:"🇵🇱",
+button:"Polski",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"pl-PL"
+},
+
+{
+flag:"🇹🇷",
+button:"Türkçe",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"tr-TR"
+},
+
+{
+flag:"🇸🇦",
+button:"العربية",
+display:"شو نيشيدا",
+sub:"",
+speak:"شو نيشيدا",
+lang:"ar-SA"
+},
+
+{
+flag:"🇮🇳",
+button:"हिन्दी",
+display:"शो निशिदा",
+sub:"",
+speak:"शो निशिदा",
+lang:"hi-IN"
+},
+
+{
+flag:"🇹🇭",
+button:"ไทย",
+display:"โช นิชิดะ",
+sub:"",
+speak:"โช นิชิดะ",
+lang:"th-TH"
+},
+
+{
+flag:"🇻🇳",
+button:"Tiếng Việt",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"vi-VN"
+},
+
+{
+flag:"🇮🇩",
+button:"Bahasa Indonesia",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"id-ID"
+},
+
+{
+flag:"🇲🇾",
+button:"Bahasa Melayu",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"ms-MY"
+},
+
+{
+flag:"🇸🇪",
+button:"Svenska",
+display:"Sho Nishida",
+sub:"",
+speak:"Sho Nishida",
+lang:"sv-SE"
+}
+
+];
+
+// =========================
+// Global Variables
+// =========================
+
+let voices = [];
+
+let currentLanguage = languages[0];
+
+// =========================
+// HTML Elements
+// =========================
+
+const buttonArea =
+document.getElementById("buttons");
+
+const displayName =
+document.getElementById("displayName");
+
+const displaySub =
+document.getElementById("displaySub");
+
+const voiceName =
+document.getElementById("voiceName");
+
+const speakButton =
+document.getElementById("speakButton");
+
+// ===========================
+// Create Language Buttons
+// ===========================
+
+function createButtons(){
+
+buttonArea.innerHTML="";
+
+languages.forEach(language=>{
+
+const btn=document.createElement("button");
+
+btn.className="langButton";
+
+btn.innerHTML=
+language.flag+" "+language.button;
+
+btn.onclick=function(){
+
+currentLanguage=language;
+
+displayName.textContent=
+language.display;
+
+displaySub.textContent=
+language.sub;
+
+voiceName.textContent=
+language.button;
+
+};
+
+buttonArea.appendChild(btn);
+
+});
+
+}
+
+createButtons();
+
+// ===========================
+// Load Voices
+// ===========================
+
+function loadVoices(){
+
+    voices = speechSynthesis.getVoices();
+
+}
+
+loadVoices();
+
+if(speechSynthesis.onvoiceschanged!==undefined){
+
+    speechSynthesis.onvoiceschanged=loadVoices;
+
+}
+
+// ===========================
+// Speak Current Language
+// ===========================
+
+function speakCurrentLanguage(){
+
+    if(voices.length===0){
+
+        loadVoices();
+
+    }
+
+    const utterance =
+    new SpeechSynthesisUtterance(
+        currentLanguage.speak
+    );
+
+    utterance.lang=currentLanguage.lang;
+
+const languageCode = currentLanguage.lang.substring(0,2);
+
+const voice = voices.find(v =>
+    v.lang.toLowerCase().startsWith(languageCode.toLowerCase())
+);
+
+    if(voice){
+
+        utterance.voice=voice;
+
+        voiceName.textContent=
+        voice.name;
+
+    }else{
+
+        voiceName.textContent=
+        "Voice Not Installed";
+
+    }
+
+    speechSynthesis.cancel();
+
+    speechSynthesis.speak(
+        utterance
+    );
+
+}
+
+// ===========================
+// Speak Button
+// ===========================
+
+speakButton.addEventListener("click",function(){
+
+    speakCurrentLanguage();
+
+});
+
+// 初期表示
+
+displayName.textContent=currentLanguage.display;
+displaySub.textContent=currentLanguage.sub;
+voiceName.textContent=currentLanguage.button;
+
+</script>
+
+</body>
+</html>
